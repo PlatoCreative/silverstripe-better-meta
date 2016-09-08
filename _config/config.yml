@@ -1,0 +1,5 @@
+Name: better-meta
+Before: 'opengraph/*'
+SiteTree:
+  extensions:
+    - SiteTreeMetaExtension

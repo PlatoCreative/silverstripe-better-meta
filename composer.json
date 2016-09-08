@@ -1,0 +1,22 @@
+{
+  "name": "plato-creative/silverstripe-better-meta",
+  "description": "Moves meta, adds social sharing options and adds rich snippets",
+  "type": "silverstripe-module",
+  "keywords": ["silverstripe", "meta", "title", "metatitle", "social media", "facebook", "open graph", "opengraph", "share"],
+  "license": "BSD-3-Clause",
+  "authors": [
+    {
+      "name": "Gorrie Coe",
+      "email": "gorriecoe@gmail.com"
+    }
+  ],
+  "require":
+  {
+    "silverstripe/framework": "^3.2",
+    "silverstripe/cms": "^3.2",
+    "tractorcow/silverstripe-opengraph": "^3.1"
+  },
+  "extra": {
+    "installer-name": "better-meta"
+  }
+}
