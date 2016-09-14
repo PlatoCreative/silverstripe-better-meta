@@ -285,11 +285,19 @@ class SiteTreeMetaExtension extends DataExtension
                 if ($contactPoint->FaxNumber) {
                     $contactPointSchema['faxNumber'] = "$contactPoint->FaxNumber";
                 }
-                if ($contactPoint->ContactOption) {
-                    $contactPointSchema['contactOption'] = "$contactPoint->ContactOption";
+                if ($contactOption = $contactPoint->ContactOption) {
+                    if (strpos($contactOption, ',') !== false) {
+                        $contactPointSchema['contactOption'] = explode(',', $contactOption);
+                    } else {
+                        $contactPointSchema['contactOption'] = "$contactPoint->ContactOption";
+                    }
                 }
-                if ($contactPoint->AreaServed) {
-                    $contactPointSchema['areaServed'] = "$contactPoint->AreaServed";
+                if ($areaServed = $contactPoint->AreaServed) {
+                    if (strpos($areaServed, ',') !== false) {
+                        $contactPointSchema['areaServed'] = explode(',', $areaServed);
+                    } else {
+                        $contactPointSchema['areaServed'] = "$contactPoint->AreaServed";
+                    }
                 }
                 if ($contactPoint->HoursAvailable) {
                     $contactPointSchema['hoursAvailable'] = "$contactPoint->HoursAvailable";
