@@ -3,3 +3,6 @@ Before: 'opengraph/*'
 SiteTree:
   extensions:
     - SiteTreeMetaExtension
+SiteConfig:
+  extensions:
+    - SiteConfigMetaExtension

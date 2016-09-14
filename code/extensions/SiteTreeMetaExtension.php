@@ -85,7 +85,7 @@ class SiteTreeMetaExtension extends DataExtension
                     _t('SiteTree.METAIMAGECUSTOM', 'Meta Image')
                 )
                     ->setAllowedFileCategories('image')
-                    ->setAllowedMaxFileNumber(1)
+                    ->setAllowedMaxFileNumber(1),
                 CheckboxField::create(
                     'NoIndex',
                     _t('SiteTree.NOINDEX', 'No Index')
@@ -263,15 +263,51 @@ class SiteTreeMetaExtension extends DataExtension
         );
         $MetaMarkup[] = '<script type="application/ld+json">'. Convert::array2json($sitename) .'</script>';
 
+        if ($contactPoints = $siteconfig->ContactPoints()) {
+            $contactPointsSchema = array(
+                "@context" => "http://schema.org",
+                "@type" => "Organization"
+            );
+            $contactPoint = 1;
+            foreach ($contactPoints as $contactPoint) {
+                $contactPointSchema = array(
+                    "@type" => "ContactPoint"
+                );
+                if ($contactPoint->Title) {
+                    $contactPointSchema['contactType'] = "$contactPoint->Title";
+                }
+                if ($contactPoint->Telephone) {
+                    $contactPointSchema['telephone'] = "$contactPoint->Telephone";
+                }
+                if ($contactPoint->Email) {
+                    $contactPointSchema['email'] = "$contactPoint->Email";
+                }
+                if ($contactPoint->FaxNumber) {
+                    $contactPointSchema['faxNumber'] = "$contactPoint->FaxNumber";
+                }
+                if ($contactPoint->ContactOption) {
+                    $contactPointSchema['contactOption'] = "$contactPoint->ContactOption";
+                }
+                if ($contactPoint->AreaServed) {
+                    $contactPointSchema['areaServed'] = "$contactPoint->AreaServed";
+                }
+                if ($contactPoint->HoursAvailable) {
+                    $contactPointSchema['hoursAvailable'] = "$contactPoint->HoursAvailable";
+                }
+                $contactPointsSchema['contactPoint'][] = $contactPointSchema;
+            }
+            $MetaMarkup[] = '<script type="application/ld+json">'. Convert::array2json($contactPointsSchema) .'</script>';
+        }
+
         $pages = $owner->getBreadcrumbItems();
         if ($pages->Count() > 1) {
-            $breadcrumbs = array(
+            $breadcrumbsSchema = array(
                 "@context" => "http://schema.org",
                 "@type" => "BreadcrumbList"
             );
             $position = 1;
             foreach ($pages as $page) {
-                $breadcrumbs['itemListElement'][] = array(
+                $breadcrumbsSchema['itemListElement'][] = array(
                     "@type" => "ListItem",
                     "position" => $position,
                     "item" => array(
@@ -282,7 +318,7 @@ class SiteTreeMetaExtension extends DataExtension
                 );
                 $position++;
             }
-            $MetaMarkup[] = '<script type="application/ld+json">'. Convert::array2json($breadcrumbs) .'</script>';
+            $MetaMarkup[] = '<script type="application/ld+json">'. Convert::array2json($breadcrumbsSchema) .'</script>';
         }
 
         $tags = implode('', $MetaMarkup);
@@ -337,9 +373,15 @@ class SiteTreeMetaExtension extends DataExtension
      */
     public function getDefaultOGImage()
     {
-        // We don't want to use the SilverStripe logo, so let's use a favicon if available.
-        return (file_exists(BASE_PATH.'/apple-touch-icon.png'))
-            ? Director::absoluteURL('apple-touch-icon.png', true)
-            : false;
+        $owner = $this->owner;
+        if ($owner->OGImageCustomID) {
+            return $owner->OGImageCustom();
+        }
+
+        if ($owner->MetaImageCustomID) {
+            return $owner->MetaImageCustom();
+        }
+
+        return false;
     }
 }

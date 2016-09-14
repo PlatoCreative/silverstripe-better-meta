@@ -14,7 +14,8 @@
   {
     "silverstripe/framework": "^3.2",
     "silverstripe/cms": "^3.2",
-    "tractorcow/silverstripe-opengraph": "^3.1"
+    "tractorcow/silverstripe-opengraph": "^3.1",
+    "silverstripe/tagfield": "^1.3.1"
   },
   "extra": {
     "installer-name": "better-meta"
