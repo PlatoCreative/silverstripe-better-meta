@@ -8,11 +8,12 @@
 class SiteConfigMetaExtension extends DataExtension
 {
     /**
-     * Has_many relationship
+     * Many_many relationship
      * @var array
      */
-    private static $has_many = array(
-        'ContactPoints' => 'ContactPoint'
+    private static $many_many = array(
+        'ContactPoints' => 'SchemaContactPoint',
+        'LocalBusiness' => 'SchemaPlaceLocalBusiness'
     );
 
     /**
@@ -26,8 +27,14 @@ class SiteConfigMetaExtension extends DataExtension
             array(
                 GridField::create(
                     'ContactPoints',
-                    _t('SiteConfig.CONTACTPOINTS', 'Contact Points'),
+                    _t('SiteConfig.CONTACTPOINTS', 'Contact points'),
                     $this->owner->ContactPoints(),
+                    GridFieldConfig_RecordEditor::create()
+                ),
+                GridField::create(
+                    'LocalBusiness',
+                    _t('SiteConfig.LOCALBUSINESS', 'Local business'),
+                    $this->owner->LocalBusiness(),
                     GridFieldConfig_RecordEditor::create()
                 )
             )

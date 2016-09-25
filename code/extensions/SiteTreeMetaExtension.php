@@ -268,43 +268,21 @@ class SiteTreeMetaExtension extends DataExtension
                 "@context" => "http://schema.org",
                 "@type" => "Organization"
             );
-            $contactPoint = 1;
             foreach ($contactPoints as $contactPoint) {
-                $contactPointSchema = array(
-                    "@type" => "ContactPoint"
-                );
-                if ($contactPoint->Title) {
-                    $contactPointSchema['contactType'] = "$contactPoint->Title";
-                }
-                if ($contactPoint->Telephone) {
-                    $contactPointSchema['telephone'] = "$contactPoint->Telephone";
-                }
-                if ($contactPoint->Email) {
-                    $contactPointSchema['email'] = "$contactPoint->Email";
-                }
-                if ($contactPoint->FaxNumber) {
-                    $contactPointSchema['faxNumber'] = "$contactPoint->FaxNumber";
-                }
-                if ($contactOption = $contactPoint->ContactOption) {
-                    if (strpos($contactOption, ',') !== false) {
-                        $contactPointSchema['contactOption'] = explode(',', $contactOption);
-                    } else {
-                        $contactPointSchema['contactOption'] = "$contactPoint->ContactOption";
-                    }
-                }
-                if ($areaServed = $contactPoint->AreaServed) {
-                    if (strpos($areaServed, ',') !== false) {
-                        $contactPointSchema['areaServed'] = explode(',', $areaServed);
-                    } else {
-                        $contactPointSchema['areaServed'] = "$contactPoint->AreaServed";
-                    }
-                }
-                if ($contactPoint->HoursAvailable) {
-                    $contactPointSchema['hoursAvailable'] = "$contactPoint->HoursAvailable";
-                }
-                $contactPointsSchema['contactPoint'][] = $contactPointSchema;
+                $contactPointsSchema['contactPoint'][] = $contactPoint->buildSchemaArray();
             }
             $MetaMarkup[] = '<script type="application/ld+json">'. Convert::array2json($contactPointsSchema) .'</script>';
+        }
+
+        if ($localBusiness = $siteconfig->LocalBusiness()) {
+            $localBusinessSchema = array(
+                "@context" => "http://schema.org",
+                "@type" => "Organization"
+            );
+            foreach ($localBusiness as $localBusinessItem) {
+                $localBusinessSchema['department'][] = $localBusinessItem->buildSchemaArray();
+            }
+            $MetaMarkup[] = '<script type="application/ld+json">'. Convert::array2json($localBusinessSchema) .'</script>';
         }
 
         $pages = $owner->getBreadcrumbItems();
@@ -329,7 +307,7 @@ class SiteTreeMetaExtension extends DataExtension
             $MetaMarkup[] = '<script type="application/ld+json">'. Convert::array2json($breadcrumbsSchema) .'</script>';
         }
 
-        $tags = implode('', $MetaMarkup);
+        $tags = implode("\n", $MetaMarkup);
     }
 
     /**
