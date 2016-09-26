@@ -199,6 +199,17 @@ class SiteTreeMetaExtension extends DataExtension
         $MetaMarkup[] = "<meta http-equiv='Content-type' content='text/html; charset=$charset' />";
         if($owner->MetaDescription) {
             $MetaMarkup[] = "<meta name='description' content='" . Convert::raw2att($owner->MetaDescription) . "' />";
+        } else if ($owner->Content) {
+            $contentSnippet = Convert::raw2att(strip_tags($owner->Content));
+            $maxDescription = substr($contentSnippet, 0, 160);
+            $matches = array();
+            $regex = preg_match('(.*[\.\?!])', $maxDescription, $matches);
+            if(isset($matches[0])) {
+                $metaDescription = $matches[0];
+            } else {
+                $metaDescription = $maxDescription;
+            }
+            $MetaMarkup[] = "<meta name='description' content='" . $metaDescription . "' />";
         }
 
         if($owner->ExtraMeta) {

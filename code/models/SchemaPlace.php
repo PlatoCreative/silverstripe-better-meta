@@ -85,14 +85,15 @@ class SchemaPlace extends SchemaThing
         if ($this->BranchCode) {
             $array['branchCode'] = "$this->BranchCode";
         }
-        if ($openingHours = $siteconfig->OpeningHoursSpecification()) {
+        if ($openingHours = $this->OpeningHoursSpecification()) {
             $openingHoursSchema = array(
-                "@context" => "http://schema.org",
-                "@type" => "Organization"
+                // "@context" => "http://schema.org",
+                "@type" => "OpeningHoursSpecification"
             );
             foreach ($openingHours as $openingHoursItem) {
-                $openingHoursSchema['openingHoursSpecification'][] = $openingHoursItem->buildSchemaArray();
+                $openingHoursSchema[] = $openingHoursItem->buildSchemaArray();
             }
+            $array['openingHoursSpecification'] = $openingHoursSchema;
         }
         return $array;
     }

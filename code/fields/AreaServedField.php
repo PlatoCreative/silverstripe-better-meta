@@ -10,8 +10,6 @@ class AreaServedField extends StringTagField
     /**
      * @param string $name
      * @param string $title
-     * @param null|DataList $source
-     * @param null|DataList $value
      */
     public function __construct($name, $title = '')
     {
