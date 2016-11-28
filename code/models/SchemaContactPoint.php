@@ -106,8 +106,8 @@ class SchemaContactPoint extends SchemaThing
     public function buildSchemaArray()
     {
         $array = parent::buildSchemaArray();
-        if ($this->Title) {
-            $array['contactType'] = "$this->Title";
+        if ($this->ContactType) {
+            $array['contactType'] = "$this->ContactType";
         }
         if ($this->Telephone) {
             $array['telephone'] = "$this->Telephone";
