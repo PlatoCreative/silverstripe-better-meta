@@ -424,7 +424,8 @@ class SiteTreeMetaExtension extends DataExtension
         if ($contactPoints = $siteconfig->ContactPoints()) {
             $contactPointsSchema = array(
                 "@context" => "http://schema.org",
-                "@type" => "Organization"
+                "@type" => "Organization",
+                "url" => Director::absoluteBaseURL()
             );
             foreach ($contactPoints as $contactPoint) {
                 $contactPointsSchema['contactPoint'][] = $contactPoint->buildSchemaArray();
