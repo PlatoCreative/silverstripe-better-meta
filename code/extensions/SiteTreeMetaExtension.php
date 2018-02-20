@@ -513,6 +513,12 @@ class SiteTreeMetaExtension extends DataExtension
         if ($owner->MetaImageCustomID) {
             return $owner->MetaImageCustom();
         }
+        
+        // Check siteconfig for one
+        $config = SiteConfig::current_site_config();
+        if ($config->MetaImageCustomID) {
+            return $config->MetaImageCustom();
+        }
 
         return false;
     }
