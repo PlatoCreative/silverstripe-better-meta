@@ -15,6 +15,10 @@ class SiteConfigMetaExtension extends DataExtension
         'ContactPoints' => 'SchemaContactPoint',
         'LocalBusiness' => 'SchemaPlaceLocalBusiness'
     );
+    
+    private static $has_one = array(
+        'MetaImageCustom' => 'Image'
+    );
 
     /**
      * Update Fields
@@ -25,6 +29,7 @@ class SiteConfigMetaExtension extends DataExtension
         $fields->addFieldsToTab(
             'Root.Meta',
             array(
+                UploadField::create('MetaImageCustom', 'Default Meta Image'),
                 GridField::create(
                     'ContactPoints',
                     _t('SiteConfig.CONTACTPOINTS', 'Contact points'),
