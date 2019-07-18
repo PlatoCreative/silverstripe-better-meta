@@ -22,7 +22,8 @@ class SiteTreeMetaExtension extends DataExtension
         'NoFollow' => 'Boolean',
         'NoVisit' => 'Boolean',
         'NoSnippet' => 'Boolean',
-        'NoCache' => 'Boolean'
+        'NoCache' => 'Boolean',
+        'NoIndex' => 'Boolean'
     );
 
     /**
